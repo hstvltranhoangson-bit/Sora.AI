@@ -1,0 +1,27 @@
+SORA Fusion - THONG TIN NGUON VA QUYEN SU DUNG
+
+Nguon do nguoi dung cung cap (ba ZIP):
+- lachydotmcg/capri-desktop: Source for 60-frame perch and music-perch sheets.
+- capridotcom/Capri-AI: C# reference implementation of Windows Media Sessions, Mainframe and Agent.
+- mochiiwuff/capri-desktop: Original RT Electron animation and desktop companion architecture.
+
+Tep duoc nhap tu tai lieu nguon:
+  assets/sora/sora-perch-60.png (original sprites/perch.png)
+  assets/sora/sora-perch-music-60.png (original sprites/perch_music.png)
+
+Cac file anh la tac pham do nghe si cua du an goc cung cap, co the KHONG duoc cap
+phep thong qua giay phep ma nguon. Chi su dung noi bo va phi thuong mai neu
+ban co quyen su dung; khong tu dong tai su dung/phan phoi lai ngoai pham vi quyen.
+Phan code cua lich su Capri co nhieu phien ban va giay phep khac nhau;
+khong thay doi/cat bo cac thong bao ban quyen hoac danh tinh nguoi dong gop.
+
+Ma backend Fusion va bo khung mini-player: trien khai moi cho Sora,
+khong khoi chay bo nao C# rieng hay sao chep nghiem ngat mot Mainframe cua Capri.
+Windows Media Bridge (C#) la tinh nang tuy chon; can .NET 8 SDK va
+Microsoft.Windows.SDK.Contracts de bien dich. SORA van chay khi khong co.
+
+Khong nhap cac WAV giong noi tu du an goc, khong clone giong dien vien.
+Speech-to-text: su dung faster-whisper tai cho, phai cai thu vien va model tuong ung.
+Text-to-speech: Piper chi co the doc tieng Viet khi nguoi dung cung cap
+Piper binary va model tieng Viet hop le (SORA_PIPER_EXE, SORA_PIPER_VOICE).
+Micro luon mac dinh TAT. Khong gui anh man hinh hay micro len cloud mac dinh.

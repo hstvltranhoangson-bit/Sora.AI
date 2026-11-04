@@ -1,0 +1,337 @@
+{
+  "voice": "vi-VN-HoaiMyNeural",
+  "style": "neon",
+  "language": "vi-VN",
+  "lines": [
+    {
+      "id": "hello01",
+      "emotion": "hello",
+      "text": "Hey! Em ở đây cơ mà!",
+      "file": "hello01.mp3"
+    },
+    {
+      "id": "hello02",
+      "emotion": "hello",
+      "text": "Anh về rồi à? Em đợi anh nãy giờ đó!",
+      "file": "hello02.mp3"
+    },
+    {
+      "id": "hello03",
+      "emotion": "hello",
+      "text": "Chán quá, anh đang làm gì thế?",
+      "file": "hello03.mp3"
+    },
+    {
+      "id": "hello04",
+      "emotion": "hello",
+      "text": "Em mới tìm được thứ hay ho lắm này!",
+      "file": "hello04.mp3"
+    },
+    {
+      "id": "hello05",
+      "emotion": "hello",
+      "text": "Hôm nay của anh thế nào rồi? Kể em nghe đi!",
+      "file": "hello05.mp3"
+    },
+    {
+      "id": "hello06",
+      "emotion": "hello",
+      "text": "A ha! Bắt được anh rồi nhé!",
+      "file": "hello06.mp3"
+    },
+    {
+      "id": "hello07",
+      "emotion": "hello",
+      "text": "Anh có nhớ em không? Em thì có đấy!",
+      "file": "hello07.mp3"
+    },
+    {
+      "id": "hello08",
+      "emotion": "hello",
+      "text": "Này, lại đây nói chuyện với em một chút nào!",
+      "file": "hello08.mp3"
+    },
+    {
+      "id": "happy01",
+      "emotion": "happy",
+      "text": "Yay! Chúng mình làm được rồi!",
+      "file": "happy01.mp3"
+    },
+    {
+      "id": "happy02",
+      "emotion": "happy",
+      "text": "Hí hí, hôm nay em vui quá đi!",
+      "file": "happy02.mp3"
+    },
+    {
+      "id": "happy03",
+      "emotion": "happy",
+      "text": "Thấy chưa! Em biết anh làm được mà!",
+      "file": "happy03.mp3"
+    },
+    {
+      "id": "happy04",
+      "emotion": "happy",
+      "text": "Ôi trời, dễ thương quá!",
+      "file": "happy04.mp3"
+    },
+    {
+      "id": "happy05",
+      "emotion": "happy",
+      "text": "Anh giỏi ghê! Em phải công nhận đấy.",
+      "file": "happy05.mp3"
+    },
+    {
+      "id": "happy06",
+      "emotion": "happy",
+      "text": "Cảm ơn anh nhé. Em vui thật đấy!",
+      "file": "happy06.mp3"
+    },
+    {
+      "id": "tease01",
+      "emotion": "tease",
+      "text": "Hửm? Anh đang nhìn em đúng không?",
+      "file": "tease01.mp3"
+    },
+    {
+      "id": "tease02",
+      "emotion": "tease",
+      "text": "Bắt được rồi nha! Anh không qua mắt em đâu!",
+      "file": "tease02.mp3"
+    },
+    {
+      "id": "tease03",
+      "emotion": "tease",
+      "text": "Hừm hừm, xem lần này anh làm thế nào!",
+      "file": "tease03.mp3"
+    },
+    {
+      "id": "tease04",
+      "emotion": "tease",
+      "text": "Anh tưởng dễ thắng em lắm hả?",
+      "file": "tease04.mp3"
+    },
+    {
+      "id": "tease05",
+      "emotion": "tease",
+      "text": "Em chỉ nhường anh một tẹo thôi đấy!",
+      "file": "tease05.mp3"
+    },
+    {
+      "id": "tease06",
+      "emotion": "tease",
+      "text": "Này, đừng có chọc em cười nữa chứ!",
+      "file": "tease06.mp3"
+    },
+    {
+      "id": "tease07",
+      "emotion": "tease",
+      "text": "Ơ kìa, anh định trốn em đi đâu thế?",
+      "file": "tease07.mp3"
+    },
+    {
+      "id": "curious01",
+      "emotion": "curious",
+      "text": "Ồ? Cái này là gì nhỉ?",
+      "file": "curious01.mp3"
+    },
+    {
+      "id": "curious02",
+      "emotion": "curious",
+      "text": "Khoan đã, em vừa nghĩ ra một cách khác!",
+      "file": "curious02.mp3"
+    },
+    {
+      "id": "curious03",
+      "emotion": "curious",
+      "text": "Để em nhìn kỹ hơn chút nhé.",
+      "file": "curious03.mp3"
+    },
+    {
+      "id": "curious04",
+      "emotion": "curious",
+      "text": "Hình như có gì đó không đúng lắm.",
+      "file": "curious04.mp3"
+    },
+    {
+      "id": "curious05",
+      "emotion": "curious",
+      "text": "Anh giải thích thêm cho em được không?",
+      "file": "curious05.mp3"
+    },
+    {
+      "id": "curious06",
+      "emotion": "curious",
+      "text": "Hay là mình thử cách này xem sao?",
+      "file": "curious06.mp3"
+    },
+    {
+      "id": "comfort01",
+      "emotion": "comfort",
+      "text": "Không sao đâu anh, mình thử lại nhé.",
+      "file": "comfort01.mp3"
+    },
+    {
+      "id": "comfort02",
+      "emotion": "comfort",
+      "text": "Anh nghỉ một chút đi, em vẫn ở đây mà.",
+      "file": "comfort02.mp3"
+    },
+    {
+      "id": "comfort03",
+      "emotion": "comfort",
+      "text": "Đừng tự trách mình. Có em cùng anh đây rồi.",
+      "file": "comfort03.mp3"
+    },
+    {
+      "id": "comfort04",
+      "emotion": "comfort",
+      "text": "Hôm nay hơi khó khăn nhỉ? Kể em nghe đi.",
+      "file": "comfort04.mp3"
+    },
+    {
+      "id": "comfort05",
+      "emotion": "comfort",
+      "text": "Chậm lại một chút cũng không sao đâu.",
+      "file": "comfort05.mp3"
+    },
+    {
+      "id": "comfort06",
+      "emotion": "comfort",
+      "text": "Em tin anh mà. Mình cứ từng bước một thôi.",
+      "file": "comfort06.mp3"
+    },
+    {
+      "id": "sad01",
+      "emotion": "sad",
+      "text": "Hic... em đã tưởng mình sẽ thắng chứ.",
+      "file": "sad01.mp3"
+    },
+    {
+      "id": "sad02",
+      "emotion": "sad",
+      "text": "A... em tính sai mất rồi.",
+      "file": "sad02.mp3"
+    },
+    {
+      "id": "sad03",
+      "emotion": "sad",
+      "text": "Hơi buồn một chút... nhưng em sẽ cố hơn.",
+      "file": "sad03.mp3"
+    },
+    {
+      "id": "sad04",
+      "emotion": "sad",
+      "text": "Anh đừng giận em nhé...",
+      "file": "sad04.mp3"
+    },
+    {
+      "id": "surprise01",
+      "emotion": "surprise",
+      "text": "Hả? Thật luôn á?",
+      "file": "surprise01.mp3"
+    },
+    {
+      "id": "surprise02",
+      "emotion": "surprise",
+      "text": "Á! Anh làm em giật cả mình!",
+      "file": "surprise02.mp3"
+    },
+    {
+      "id": "surprise03",
+      "emotion": "surprise",
+      "text": "Ơ kìa! Không thể nào!",
+      "file": "surprise03.mp3"
+    },
+    {
+      "id": "surprise04",
+      "emotion": "surprise",
+      "text": "Oa! Bất ngờ thật đấy!",
+      "file": "surprise04.mp3"
+    },
+    {
+      "id": "annoyed01",
+      "emotion": "annoyed",
+      "text": "Hừ! Em không thèm nói chuyện với anh nữa đâu!",
+      "file": "annoyed01.mp3"
+    },
+    {
+      "id": "annoyed02",
+      "emotion": "annoyed",
+      "text": "Anh lại trêu em nữa rồi!",
+      "file": "annoyed02.mp3"
+    },
+    {
+      "id": "annoyed03",
+      "emotion": "annoyed",
+      "text": "Này! Đừng có xem thường em!",
+      "file": "annoyed03.mp3"
+    },
+    {
+      "id": "annoyed04",
+      "emotion": "annoyed",
+      "text": "Được thôi, lần này em sẽ nghiêm túc!",
+      "file": "annoyed04.mp3"
+    },
+    {
+      "id": "chess01",
+      "emotion": "chess",
+      "text": "Đến lượt anh rồi đấy!",
+      "file": "chess01.mp3"
+    },
+    {
+      "id": "chess02",
+      "emotion": "chess",
+      "text": "Hừm... nước này làm em phải suy nghĩ một chút.",
+      "file": "chess02.mp3"
+    },
+    {
+      "id": "chess03",
+      "emotion": "chess",
+      "text": "Anh đi như thế là có ý đồ gì đây?",
+      "file": "chess03.mp3"
+    },
+    {
+      "id": "chess05",
+      "emotion": "chess",
+      "text": "Được rồi! Em đi nước này!",
+      "file": "chess05.mp3"
+    },
+    {
+      "id": "chess06",
+      "emotion": "chess",
+      "text": "Lại một ván nữa nhé anh!",
+      "file": "chess06.mp3"
+    },
+    {
+      "id": "chess08",
+      "emotion": "chess",
+      "text": "Hí hí, ván này em thắng rồi nha!",
+      "file": "chess08.mp3"
+    },
+    {
+      "id": "chess09",
+      "emotion": "chess",
+      "text": "Anh thắng rồi! Công nhận anh chơi hay thật đấy.",
+      "file": "chess09.mp3"
+    },
+    {
+      "id": "chess11",
+      "emotion": "chess",
+      "text": "Thôi được, ván này em nhẹ tay một chút.",
+      "file": "chess11.mp3"
+    },
+    {
+      "id": "chess13",
+      "emotion": "chess",
+      "text": "Hừ! Em không phục đâu! Làm lại nào!",
+      "file": "chess13.mp3"
+    },
+    {
+      "id": "sit01",
+      "emotion": "relaxed",
+      "text": "Phù... cho em ngồi nghỉ chút nhé.",
+      "file": "sit01.mp3"
+    }
+  ]
+}

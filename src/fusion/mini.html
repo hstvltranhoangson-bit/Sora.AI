@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'">
+  <title>Sora · Nhạc</title>
+  <link rel="stylesheet" href="mini.css">
+</head>
+<body>
+  <!-- Sora is an existing RT overlay character. No avatar canvas belongs in this window. -->
+  <main class="mini-stage" aria-label="Bảng nhạc Sora">
+    <div class="neon-rail" aria-hidden="true"></div>
+    <section class="player-frame" aria-label="Nhạc đang phát">
+      <div class="panel-inner">
+        <div class="scanlines" aria-hidden="true"></div>
+        <header class="head-line">
+          <div class="head-drag" aria-hidden="true">
+            <span class="brand-glyph">✦</span>
+            <span class="rail-code">SORA <span class="sep">/</span> AUDIO</span>
+            <span class="rail-tag">RT LINK</span>
+          </div>
+          <span id="stateText" class="state-text">ĐANG KẾT NỐI</span>
+          <span class="state-dot" aria-hidden="true"></span>
+          <button id="close" class="close-btn no-drag" type="button" aria-label="Đóng mini-player" title="Đóng mini-player">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4 16 16M16 4 4 16"/></svg>
+          </button>
+        </header>
+        <div class="rule-line" aria-hidden="true"><span></span><span></span></div>
+        <div class="meta-block" aria-live="polite">
+          <div class="music-mark" aria-hidden="true">♫</div>
+          <div class="metadata">
+            <div id="song" class="song">Đang dò nhạc Windows...</div>
+            <div class="artist-row">
+              <span id="artist" class="artist">Sora đang lắng nghe</span>
+              <span class="time-group"><span id="elapsed">--:--</span><span class="time-divider">/</span><span id="duration">--:--</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline" id="timeline" role="progressbar" aria-label="Tiến trình phát" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="timeline-rail"><span id="seek" class="timeline-fill"></span></span>
+          <span class="timeline-node" id="seekNode" aria-hidden="true"></span>
+        </div>
+        <div class="transport">
+          <button type="button" class="flat-btn no-drag" id="menu" title="Thông tin" aria-label="Thông tin" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <div class="transport-main">
+            <button type="button" class="flat-btn no-drag" id="back" title="Bài trước" aria-label="Bài trước">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M19 5 9 12l10 7V5Z"/></svg>
+            </button>
+            <button type="button" class="play-btn no-drag" id="play" title="Phát hoặc tạm dừng" aria-label="Phát hoặc tạm dừng">
+              <svg id="playIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l12-7L8 5Z"/></svg>
+            </button>
+            <button type="button" class="flat-btn no-drag" id="next" title="Bài tiếp" aria-label="Bài tiếp">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 5 10 7-10 7V5ZM19 5v14"/></svg>
+            </button>
+          </div>
+          <button type="button" class="flat-btn no-drag" id="mute" title="Bật/tắt tiếng" aria-label="Bật hoặc tắt tiếng">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4ZM17 9a5 5 0 0 1 0 6M19 6a9 9 0 0 1 0 12"/></svg>
+          </button>
+        </div>
+        <footer class="bottom-code" aria-hidden="true"><span>DESKTOP COMPANION</span><span>LOCAL MEDIA // V2</span></footer>
+      </div>
+    </section>
+    <div id="extra" class="extra" hidden>
+      <div class="extra-title">SORA // MEDIA</div>
+      <button type="button" class="extra-close no-drag" id="closeExtra" aria-label="Đóng hướng dẫn">×</button>
+      <p id="hint">Đang kết nối Windows Media.</p>
+      <p>Kéo trên thanh SORA / AUDIO để di chuyển. Nhân vật Sora RT vẫn ngồi trên mép cửa sổ này.</p>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+  <script src="mini.js"></script>
+</body>
+</html>
