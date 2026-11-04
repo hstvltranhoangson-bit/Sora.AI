@@ -9,6 +9,12 @@ export function frameAt(ms, fps=PERCH_FRAME.fps) {
   return Math.floor(Math.max(0, ms) * fps / 1000) % PERCH_FRAME.count;
 }
 
+// Một lần mới ngồi phải bắt đầu từ frame 0, không phụ thuộc thời gian
+// Electron đã chạy bao lâu. Khi đổi nhạc/không nhạc cũng đồng bộ lại chu kỳ.
+export function frameFromEntry(now, startedAt, fps=PERCH_FRAME.fps) {
+  return frameAt(Math.max(0, now - startedAt), fps);
+}
+
 export class SoraPerch60 {
   constructor(canvas) {
     this.canvas=canvas;
@@ -20,6 +26,7 @@ export class SoraPerch60 {
     this.currentMode='sitClassic';
     this.currentBox=null;
     this.lastFrame=-1;
+    this.startedAt=null;
     this.lastType='';
     this.lastSize=null;
     this.shader=null;
@@ -65,13 +72,16 @@ export class SoraPerch60 {
     this.visible=false;
     this.currentMode='sitClassic';
     this.currentBox=null;
+    this.startedAt=null;
+    this.lastFrame=-1;
+    this.lastType='';
     if(this.canvas) this.canvas.style.opacity='0';
   }
 
   setupShader() {
     if (this.shader || !this.canvas || !this.frameCanvas) return;
     try {
-      this.shader=new SeatedRenderer(this.canvas,this.frameCanvas);
+      this.shader=new SeatedRenderer(this.canvas,this.frameCanvas,{compactPerch:true});
     } catch (err) {
       // Low-end GPU: only then use the same classic CSS fallback grade.
       console.warn('[Sora] WebGL perch không sẵn sàng:',err);
@@ -88,7 +98,12 @@ export class SoraPerch60 {
       this.hide(); return false;
     }
     const music=mode==='perchMusic';
-    const frame=frameAt(now);
+    // Khóa thời điểm vào pose; không bắt đầu ở một frame bất kỳ của chu kỳ.
+    if (!this.visible || this.currentMode!==mode || this.startedAt===null) {
+      this.startedAt=now;
+      this.lastFrame=-1;
+    }
+    const frame=frameFromEntry(now,this.startedAt);
     const src=music && this.music?.naturalWidth ? this.music : this.idle;
     if (!src?.naturalWidth) {this.hide();return false;}
     const kind=src===this.music?'music':'idle';

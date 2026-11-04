@@ -2,9 +2,40 @@
 
 > **Sora** là nhân vật đồng hành AI trên Windows: giao diện Electron/RT, bộ não Ollama cục bộ, bộ nhớ SQLite và các công cụ tương tác desktop. Dự án mang phong cách cyberpunk, nhưng câu trả lời kỹ thuật vẫn cần chính xác, có căn cứ và phản ánh những gì Sora thực sự quan sát được.
 
-![Minh họa giao diện Sora — sơ đồ mô phỏng, không phải ảnh chụp thật](docs/sora-demo.png)
+![Ảnh chụp thực tế Sora.AI: menu RT và cửa sổ trò chơi](docs/sora-demo.png)
 
-> **Ảnh minh họa / Demo:** Hình trên là bản **mô phỏng bố cục** để mô tả nhân vật, DIALOG, trạng thái và Glitch. Không phải bản chụp ứng dụng đang chạy. Khi có ảnh chụp đã kiểm tra, có thể thay bằng `docs/sora-demo.png` và cập nhật đường dẫn trong README này.
+> **Ảnh chụp thật:** Ghép từ hai ảnh chụp Sora.AI trên Windows do người dùng cung cấp, gồm nhân vật/menu RT và cửa sổ trò chơi. Đây là ảnh từ các phiên phát triển trước, không phải bản dựng giả và không chứng minh mọi tab của bản hiện tại đã được kiểm thử trên Windows.
+
+## Cập nhật 04/11/2026 — Ổn định đầu khi ngồi trên cửa sổ
+
+Video thực tế cho thấy đầu/tóc Sora méo mạnh khi vừa chuyển sang tư thế ngồi ở mép cửa sổ. Phân tích mã nguồn tìm được **hai nguyên nhân kỹ thuật**:
+
+- Bộ sprite 60 frame (`196 × 384` mỗi frame) dùng cùng shader kéo tóc theo pixel của sprite ngồi cổ điển (`948 × 1659`), làm chuyển động đầu/tóc bị phóng đại theo tỉ lệ.
+- Hoạt ảnh tiếp đất `plop` từng co chiều cao 15% và nở bề ngang 10% ở 2 frame đầu; bộ 60 frame cũng từng bắt đầu tại một frame bất kỳ theo `performance.now()`.
+
+**Đã điều chỉnh:** Dùng `compactPerch` để bảo vệ vùng mắt/mặt và chỉ dịch nhẹ ngọn tóc, giảm độ uốn tóc của tư thế ngồi cổ điển, hạn chế squash/stretch tiếp đất dưới 2%, và bắt đầu mỗi chu kỳ ngồi từ frame 0. Không thay sprite gốc, không thay tỷ lệ chân/hông, không sửa hệ nằm, DIALOG, menu hay backend.
+
+![Ảnh chụp thật Sora đang ngồi trên mép cửa sổ, cắt từ video do người dùng cung cấp](docs/sit.png)
+
+*Ảnh minh họa tình trạng trước chỉnh sửa, trích từ video thực tế. Chưa xác minh bản vá bằng Electron trên Windows; cần kiểm tra lại lúc Sora vừa ngồi xuống và khi chuyển giữa các bề mặt.*
+
+### Các file được cập nhật trong bản vá này
+
+- `src/renderer/js/seated-renderer.js` — shader ngồi cổ điển và biến dạng an toàn cho sprite 60 frame.
+- `src/renderer/js/sora-perch-60.mjs` — đồng bộ thời gian frame khi chuyển vào tư thế ngồi.
+- `src/renderer/js/acting.js` — giảm nén/phình khung hình lúc tiếp đất.
+- `tests/sora-sit-head-stability.test.js` — các kiểm thử bảo vệ chống hồi quy.
+- `README.md`, `docs/sora-demo.png`, `docs/sora-demo.svg`, `docs/sit.png` — tài liệu và hình ảnh thật của Sora.AI.
+
+**Cập nhật trên máy:** Thoát Sora hoàn toàn, giải nén bản ZIP vào `F:\Sora.AI\SORA`, chọn ghi đè đúng các tệp trùng tên, mở lại Sora. Không chạy script cài đặt, không tự sao lưu và không động đến `.venv`, `node_modules`, `data`, SQLite hoặc model Ollama.
+
+**Kiểm thử nhanh:** `node --test tests\sora-sit-head-stability.test.js tests\sora-sit-modes.test.js tests\perches.test.js` trong thư mục `F:\Sora.AI\SORA`.
+
+## GameHub hiện tại — 8 trò trong một cửa sổ
+
+Thanh ray ngang trên cùng có thể kéo, cuộn hoặc dùng mũi tên trái/phải để chọn **Cờ vua, Tic Tac Toe, Cờ Nối 4, Cờ Caro, Đoán Từ Bí Mật, Cờ Lật, Bắn Tàu và Thám Tử**. Menu GAME có biểu tượng riêng cho từng trò. DIALOG, VOICE và AI cục bộ hoạt động theo trò đang chọn; khi Ollama sẵn sàng Sora có thể bổ sung hội thoại. Người chơi có thể yêu cầu “nhường anh” hoặc “chơi hết sức” thay vì dùng thanh độ khó.
+
+Bản mã hiện tại đã có `src/games/hub/` và `src/games/chess/` cùng các engine cục bộ. Khả năng ghi nhớ/thống kê từng trò phụ thuộc trạng thái backend và dữ liệu SQLite trên máy; không coi mỗi tính năng là đã được kiểm chứng trực tiếp trên Windows nếu chưa có biên bản kiểm thử thực tế.
 
 ## Cập nhật 03/11/2026 — Tic Tac Toe trong cửa sổ cờ vua
 
@@ -16,27 +47,10 @@ Cửa sổ **Trò chơi** có hai tab đặt cạnh nhau: **♟ CỜ VUA** và *
 - **Chuyển trò:** Bàn cờ vua được giữ nguyên khi chuyển sang Tic Tac Toe. Bàn Tic Tac Toe, điểm số và kinh nghiệm tự lưu trong `localStorage` của Electron; khi chuyển lại hoặc mở cửa sổ lần sau, ván 3×3 được khôi phục. Hai trò có **bảng điểm độc lập**. Nút **VÁN MỚI** chỉ khởi tạo lại trò đang xem; không xóa lịch sử DIALOG.
 - **Điều khiển:** Trong menu trò chơi Sora có cả hai mục. Có thể nhắn “chuyển sang Tic Tac Toe”, “chuyển sang cờ vua”, “chơi lại”, “chơi nhẹ”, “chơi nghiêm túc”, hoặc “anh đầu hàng” khi đang chơi.
 
-### Cập nhật mã nguồn vào `F:\Sora.AI\SORA` (không xóa dữ liệu)
+### Ghi chú nâng cấp từ các bản cũ
 
-**Cách được khuyến nghị:** Thoát Sora, sao lưu thư mục `F:\Sora.AI\SORA` hoặc ít nhất `data`, rồi giải nén gói **bản vá** vào một thư mục tạm. Mở PowerShell trong thư mục bản vá và chạy:
+Phần bên trên ghi lại lịch sử bổ sung Tic Tac Toe ngày 03/11/2026. Quy trình phát hành **hiện tại** là ZIP có cấu trúc trực tiếp dưới gốc `SORA`, **giải nén đè**; không cần chạy `CaiDat-TicTacToe.ps1`, không tự động backup hoặc cài lại môi trường. Luôn thoát hoàn toàn Electron trước khi ghi đè tệp. Nếu giao diện không đổi, xác nhận ứng dụng đang mở từ `F:\Sora.AI\SORA` và đã ghi đè đúng thư mục `src`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File '.\CaiDat-TicTacToe.ps1' -Mode Check -Root 'F:\Sora.AI\SORA'
-powershell -NoProfile -ExecutionPolicy Bypass -File '.\CaiDat-TicTacToe.ps1' -Mode Install -Root 'F:\Sora.AI\SORA'
-```
-
-Script chỉ sao lưu/chép các tệp mã nguồn có trong bản vá theo **đúng tên cũ**, giữ nguyên `Sora.exe`, `.venv`, `node_modules`, `data`, SQLite, mô hình Ollama và các tài nguyên RT không bị sửa. Thư mục sao lưu được đặt ở `F:\Sora.AI\BanSaoLuu` bên ngoài gốc `SORA`. Không cần chạy `npm ci` nếu `node_modules` đã có sẵn.
-
-Sau đó mở `Sora.exe` như trước. Chạy kiểm thử (khi Node và Python đã sẵn sàng):
-
-```powershell
-cd 'F:\Sora.AI\SORA'
-node --test tests\tictactoe.test.js tests\chess.test.js
-$env:PYTHONPATH = 'F:\Sora.AI\SORA\backend'
-.\.venv\Scripts\python.exe -m unittest discover -s backend\tests -p 'test_*.py'
-```
-
-Gói mã nguồn đầy đủ là lựa chọn riêng để xem/đối chiếu hoặc khôi phục cấu trúc; **không giải nén đè toàn bộ** thư mục đang chạy nếu muốn giữ các tệp trên máy chưa có trong bản gửi. Các môi trường Python/Node, dữ liệu người dùng và model Ollama không nằm trong gói gửi lại. Chưa thực hiện kiểm tra trực tiếp trên Windows/Electron tại máy của anh; cần tự mở hai tab và kiểm tra âm thanh/Agent sau khi cập nhật.
 
 ## Mô tả ngắn gọn
 
@@ -77,6 +91,8 @@ Dữ liệu trên web/LAN được coi là **nguồn tham khảo không tin cậ
 ![Sơ đồ kiến trúc Sora](docs/architecture.png)
 
 **Nguyên tắc**: UI → Backend → (Ollama + SQLite + ngữ cảnh UI + Web/LAN) → chuẩn hóa chứng cứ → diễn đạt theo tính cách Sora → trả về DIALOG. Nội dung đọc từ web không phải là lệnh hệ thống và không được tự ý điều khiển Desktop Agent.
+
+**Lưu ý đường dẫn:** Môi trường dự án đang sử dụng là `F:\Sora.AI\SORA`. Các ví dụ `H:\SORA`/`C:\SORA` trong phần lịch sử phía dưới là ghi chép của những lần di chuyển/khôi phục cũ, không phải đường dẫn khởi chạy hiện tại.
 
 ## Cấu trúc thư mục (Project Structure)
 

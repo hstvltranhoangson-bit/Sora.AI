@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sora — Menu</title>
+  <link rel="stylesheet" href="wheel.css">
+</head>
+<body>
+  <main class="wheel-stage" id="wheel-stage">
+  <div class="wheel" role="menu" aria-label="Menu tương tác Sora">
+    <!-- Mỗi múi là một đường cong vector chính xác; không cắt dán nhiều lớp ảnh/CSS. -->
+    <svg class="wheel__drawing" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="sector-paint" cx="34%" cy="22%" r="92%">
+          <stop offset="0" stop-color="#352349" stop-opacity=".97"/>
+          <stop offset="1" stop-color="#140f23" stop-opacity=".97"/>
+        </radialGradient>
+      </defs>
+      <g id="wheel-segments" class="wheel__segments"></g>
+      <circle class="wheel__inner-line" cx="100" cy="100" r="47"/>
+      <g id="wheel-ticks" class="wheel__ticks"></g>
+      <!-- Viền tròn riêng của MENU, sát mép ngoài các múi (r=85); không áp dụng cho DIALOG.
+           Hai nửa có đường phân chia sắc nét, cùng quay theo một trục tâm.
+           Điểm đầu: nửa trên xanh, nửa dưới tím. -->
+      <g class="wheel__ring-spin">
+        <path class="wheel__ring-arc wheel__ring-arc--top" d="M12 100 A88 88 0 0 1 188 100"/>
+        <path class="wheel__ring-arc wheel__ring-arc--bottom" d="M188 100 A88 88 0 0 1 12 100"/>
+      </g>
+    </svg>
+
+    <div class="wheel__center" aria-hidden="true">
+      <span class="wheel__center-caption" id="wheel-caption">COMMAND</span>
+      <span class="wheel__center-brand" id="wheel-brand">SORA</span>
+      <span class="wheel__center-marker"></span>
+    </div>
+
+    <button class="sector" type="button" role="menuitem" data-action="chat" aria-label="Trò chuyện">
+      <svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5c-1.6 0-3.15-.5-4.4-1.4L4 19l1.4-4.1A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11.5h8"/></svg>
+    </button>
+    <button class="sector" type="button" role="menuitem" data-action="games" aria-label="Trò chơi">
+      <!-- Biểu tượng trò chơi; rê chuột vào để mở vòng chọn trò phía ngoài. -->
+      <svg viewBox="0 0 24 24"><path d="M6.9 8h10.2a4.3 4.3 0 0 1 4.2 3.5l.8 4.8a2.15 2.15 0 0 1-3.5 2L16 16H8l-2.6 2.3a2.15 2.15 0 0 1-3.5-2l.8-4.8A4.3 4.3 0 0 1 6.9 8Z"/><path d="M8 10.5v4M6 12.5h4"/><circle cx="16" cy="11.5" r=".7"/><circle cx="18.3" cy="13.8" r=".7"/></svg>
+    </button>
+    <button class="sector" type="button" role="menuitem" data-action="rest" aria-label="Nằm nghỉ">
+      <svg viewBox="0 0 24 24"><path d="M20 16.6A8.5 8.5 0 0 1 7.4 4 8.5 8.5 0 1 0 20 16.6Z"/></svg>
+    </button>
+    <button class="sector" type="button" role="menuitem" data-action="walk" aria-label="Di chuyển">
+      <svg viewBox="0 0 24 24"><path d="m4 18 6-6 4 3 6-9M14 6h6v6"/><path d="M4 6h4M4 10h2"/></svg>
+    </button>
+    <button class="sector" type="button" role="menuitem" data-action="settings" aria-label="Cài đặt">
+      <svg viewBox="0 0 24 24"><path d="M10 3h4l.6 2.3 2 .8 2.1-1.2 2.8 2.8-1.2 2.1.8 2L23 12l-1.9.2-.8 2 1.2 2.1-2.8 2.8-2.1-1.2-2 .8L14 21h-4l-.6-2.3-2-.8-2.1 1.2-2.8-2.8 1.2-2.1-.8-2L1 12l1.9-.2.8-2-1.2-2.1 2.8-2.8 2.1 1.2 2-.8Z"/><circle cx="12" cy="12" r="3"/></svg>
+    </button>
+    <button class="sector" type="button" role="menuitem" data-action="custom" aria-label="Cá nhân hóa">
+      <svg viewBox="0 0 24 24"><path d="M20.8 9.2c0 4.1-8.8 10-8.8 10S3.2 13.3 3.2 9.2a4.7 4.7 0 0 1 8.8-2.3 4.7 4.7 0 0 1 8.8 2.3Z"/></svg>
+    </button>
+    <button class="sector" type="button" role="menuitem" data-action="guide" aria-label="Hướng dẫn">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.3 9a2.8 2.8 0 1 1 5.1 1.7L12 13v1.1M12 17.5h.01"/></svg>
+    </button>
+    <button class="sector" type="button" role="menuitem" data-action="hide" aria-label="Ẩn Sora">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 18v3M5 8l14 7"/></svg>
+    </button>
+  </div>
+  <!-- Tám biểu tượng trò chơi độc lập trong một vòng cung neon. -->
+  <div class="game-submenu" id="game-submenu" role="menu" aria-label="Chọn một trong tám trò chơi" aria-hidden="true">
+    <svg class="game-submenu__drawing" viewBox="0 0 332 332" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="game-paint" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#352449" stop-opacity=".98"/><stop offset="1" stop-color="#141121" stop-opacity=".98"/></linearGradient></defs>
+      <g id="game-segments"></g><path class="game-submenu__arc" id="game-arc"></path>
+    </svg>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="chess" aria-label="Mở Cờ vua" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">♞</span><span class="game-submenu__label">CỜ VUA</span></button>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="tictactoe" aria-label="Mở Tic Tac Toe" tabindex="-1"><svg class="game-submenu__symbol game-submenu__symbol--tic" viewBox="0 0 32 32" aria-hidden="true"><path d="M11 3v26M21 3v26M3 11h26M3 21h26"/><path d="M5 5l4 4m0-4L5 9M23 24l4 4m0-4l-4 4"/><circle cx="16" cy="16" r="3"/></svg><span class="game-submenu__label">TIC TAC TOE</span></button>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="connect4" aria-label="Mở Cờ Nối 4" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">⦿</span><span class="game-submenu__label">CỜ NỐI 4</span></button>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="gomoku" aria-label="Mở Cờ Caro" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">✕</span><span class="game-submenu__label">CỜ CARO</span></button>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="word" aria-label="Mở Đoán Từ Bí Mật" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">◈</span><span class="game-submenu__label">ĐOÁN TỪ</span></button>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="reversi" aria-label="Mở Cờ Lật" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">◉</span><span class="game-submenu__label">CỜ LẬT</span></button>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="battleship" aria-label="Mở Bắn Tàu" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">⚓</span><span class="game-submenu__label">BẮN TÀU</span></button>
+    <button class="game-submenu__choice" type="button" role="menuitem" data-game="detective" aria-label="Mở Thám Tử" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">⌕</span><span class="game-submenu__label">THÁM TỬ</span></button>
+  </div>
+  </main>
+  <script src="wheel.js"></script>
+</body>
+</html>

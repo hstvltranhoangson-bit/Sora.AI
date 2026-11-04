@@ -1,0 +1,8 @@
+{
+  "public_enabled": true,
+  "auto_search": true,
+  "internal_enabled": false,
+  "internal_hosts": [],
+  "max_sources": 2,
+  "timeout_seconds": 7
+}

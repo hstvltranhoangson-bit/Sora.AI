@@ -1,27 +1,92 @@
-﻿
+# ============================================================
+# SORA.AI - .gitignore
+# Dat file nay tai: F:\Sora.AI\SORA\.gitignore
+# Chi dua ma nguon, cau hinh mau va tai nguyen can thiet len GitHub.
+# ============================================================
+
+# Python virtual environments and packages
 .venv/
 venv/
-node_modules/
+env/
+ENV/
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
 .pytest_cache/
-.cache/
-logs/
-data/models/
-bin/
-obj/
-.env
-.env.*
-*.sqlite*
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / Electron dependencies and caches
+node_modules/
+.npm/
+.yarn/
+.pnpm-store/
+.eslintcache
+coverage/
+
+# Downloaded local AI models (not source code)
+/data/models/
+/data/ollama_models/
+/OllamaModels/
+/ollama_models/
+/huggingface_cache/
+
+# Personal runtime memory and databases
+*.sqlite
+*.sqlite3
+*.sqlite3-*
 *.db
 *.db-*
-*.log
-*.tmp
-*.bak
-*.zip
-*.exe
-*.dll
-*.pdb
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Secrets: keep example config, not real credentials
+.env
+.env.*
+!.env.example
 *.pem
 *.key
 *.p12
 *.pfx
+*credentials*.json
+*secrets*.json
+
+# Logs, temporary files, local backups
+logs/
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+*.swp
+*.swo
+*.zip
+*.7z
+*.rar
+Thumbs.db
+.DS_Store
+
+# Generated builds / installers / debug symbols
+/dist/
+/build/
+/out/
+/tools/SoraMedia/bin/
+/tools/SoraMedia/obj/
+*.exe
+*.dll
+*.pdb
+*.msi
+
+# IDE-specific local files
+.vs/
+.idea/
+*.user
+*.suo
+
+# NOTE: Source code (.py, .js, .mjs, .html, .css), scripts
+# (.ps1, .bat), README.md, icons, sprites and voice assets
+# (.png, .webp, .ico, .mp3) are NOT excluded.

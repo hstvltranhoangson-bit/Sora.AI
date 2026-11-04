@@ -18,6 +18,7 @@ uniform sampler2D uTex;
 uniform vec2 uSize;
 uniform float uTime;
 uniform float uLying;
+uniform float uCompactPerch;
 uniform float uSeed;
 uniform float uBoil;
 uniform float uHair;
@@ -86,6 +87,22 @@ vec2 deform(vec2 inputPx) {
   vec2 q = inputPx;
   vec2 n = q / uSize;
   float t = uTime;
+  // Bộ 60 frame chỉ rộng 196 px, trong khi nguồn ngồi cổ điển rộng 948 px.
+  // Không được áp dụng độ uốn tóc 15–24 px trên ảnh 196 px: nó khiến đầu biến dạng
+  // hơn 5 lần về tỉ lệ. Frame 60 đã có chuyển động tóc/tay/chân được vẽ sẵn.
+  if (uCompactPerch > 0.5) {
+    // Bảo vệ mặt/mắt và gốc tóc; chỉ rung nhẹ các ngọn tóc ở phía trên.
+    float face = 1.0 - smoothstep(0.12, 0.23, distance(n, vec2(0.55, 0.36)));
+    float tips = (1.0 - smoothstep(0.30, 0.52, n.y)) * (1.0 - face);
+    q.x += tips * (0.9 * sin(t * 1.17 + n.y * 9.0)
+      + 0.65 * clamp(uHair, -2.0, 2.0));
+    q.y += tips * 0.45 * sin(t * 1.28 + n.x * 8.0);
+    // Line-boil dưới 0.2 pixel và không ảnh hưởng vùng mặt.
+    vec2 grain = vec2(vnoise(q * 0.075 + uSeed * 13.7),
+      vnoise(q * 0.075 + uSeed * 7.3 + 31.0)) - 0.5;
+    q += (1.0 - face) * grain * min(uBoil, 0.7) * 0.45;
+    return q;
+  }
   if (uLying > 0.5) {
     // Khóa vùng mặt/mặt nạ và thân: không còn giật cả hình khi chân đung đưa.
     // Chỉ phần tóc ở trên và cổ chân được dịch chuyển biên độ nhỏ theo thời gian.
@@ -123,9 +140,10 @@ vec2 deform(vec2 inputPx) {
   float face = 1.0 - smoothstep(0.11, 0.2, distance(n, vec2(0.53, 0.355)));
   float hair = (1.0 - smoothstep(0.34, 0.51, n.y)) * (1.0 - face);
   float hairTip = 0.45 + 0.55 * (1.0 - smoothstep(0.08, 0.45, n.y));
-  q.x += hair * hairTip * (15.0 * sin(t * 1.7 + n.y * 14.0)
-    + uHair * 24.0 + uMane * (n.x - 0.5) * 23.0);
-  q.y += hair * 4.0 * sin(t * 2.3 + n.x * 19.0);
+  // Ngồi cổ điển: giảm mức kéo tóc quanh đầu, không nén hoặc phóng to mặt.
+  q.x += hair * hairTip * (8.0 * sin(t * 1.7 + n.y * 14.0)
+    + clamp(uHair, -2.5, 2.5) * 12.0 + uMane * (n.x - 0.5) * 11.0);
+  q.y += hair * 2.2 * sin(t * 2.3 + n.x * 19.0);
   // Nhân vật thở và nghiêng vai, nhưng hông vẫn dính chặt mép ngang.
   float torso = smoothstep(0.43, 0.56, n.y) * (1.0 - smoothstep(0.56, 0.63, n.y));
   q.x += torso * (4.0 * sin(t * 1.25) + uHead * 8.0);
@@ -200,17 +218,18 @@ void main() {
 }`;
 
 const UNIFORMS = [
-  'uTex', 'uSize', 'uTime', 'uLying', 'uSeed', 'uBoil', 'uHair', 'uMane', 'uHead',
+  'uTex', 'uSize', 'uTime', 'uLying', 'uCompactPerch', 'uSeed', 'uBoil', 'uHair', 'uMane', 'uHead',
   'uArmL', 'uArmR', 'uKickL', 'uKickR', 'uGlitch', 'uGlitchSeed', 'uSplit',
   'uDissolve', 'uSparkle', 'uGrade', 'uSil',
   'uMisreg', 'uRim', 'uAlpha', 'uPx',
 ];
 
 export class SeatedRenderer {
-  constructor(canvas, image, { lying = false } = {}) {
+  constructor(canvas, image, { lying = false, compactPerch = false } = {}) {
     this.canvas = canvas;
     this.image = image;
     this.lying = Boolean(lying);
+    this.compactPerch = Boolean(compactPerch);
     this.scale = 0.6;
     this.gl = null;
     this.u = {};
@@ -301,6 +320,7 @@ export class SeatedRenderer {
     const u = this.u;
     gl.uniform1f(u.uTime, now * 0.001);
     gl.uniform1f(u.uLying, this.lying ? 1 : 0);
+    gl.uniform1f(u.uCompactPerch, this.compactPerch ? 1 : 0);
     gl.uniform1f(u.uSeed, p.seed || 0);
     gl.uniform1f(u.uBoil, p.boil ?? 0.9);
     gl.uniform1f(u.uHair, p.hair || 0);

@@ -440,9 +440,10 @@ export const ACTS = {
     priority: 3,
     fps: 24,
     keys: [
-      [2, { sy: 0.85, sx: 1.1, mane: -0.12, kickL: 0.3, kickR: 0.3, arms: -0.55 }],
-      [2, { sy: 1.05, sx: 0.97, kickL: 0.12, kickR: 0.12, arms: -0.38 }],
-      [1, {}],
+      // Khóa tỉ lệ đầu trong 5–7 frame đầu: chỉ nhún nhẹ khi tiếp đất.
+      [2, { sy: 0.985, sx: 1.012, mane: -0.04, kickL: 0.12, kickR: 0.12, arms: -0.40 }],
+      [3, { sy: 1.008, sx: 0.996, mane: 0.02, kickL: 0.08, kickR: 0.08, arms: -0.40 }],
+      [2, { sy: 1, sx: 1, mane: 0, kickL: 0.04, kickR: 0.04, arms: -0.40 }],
     ],
   },
 
