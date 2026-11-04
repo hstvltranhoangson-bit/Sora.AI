@@ -1,3 +1,0 @@
-# Required for the original Python Ollama client and desktop-agent planner.
-# Electron/RT UI does NOT need PySide6, so the old UI dependency is omitted.
-requests>=2.31,<3
