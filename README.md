@@ -2,9 +2,35 @@
 
 > **Sora** là nhân vật đồng hành AI trên Windows: giao diện Electron/RT, bộ não Ollama cục bộ, bộ nhớ SQLite và các công cụ tương tác desktop. Dự án mang phong cách cyberpunk, nhưng câu trả lời kỹ thuật vẫn cần chính xác, có căn cứ và phản ánh những gì Sora thực sự quan sát được.
 
-![Ảnh chụp thực tế Sora.AI: menu RT và cửa sổ trò chơi](docs/sora-demo.png)
+## Hình ảnh Sora.AI thực tế
 
-> **Ảnh chụp thật:** Ghép từ hai ảnh chụp Sora.AI trên Windows do người dùng cung cấp, gồm nhân vật/menu RT và cửa sổ trò chơi. Đây là ảnh từ các phiên phát triển trước, không phải bản dựng giả và không chứng minh mọi tab của bản hiện tại đã được kiểm thử trên Windows.
+![Cửa sổ Cờ vua và DIALOG của Sora.AI, ảnh chụp thực tế trên Windows](docs/sora-overview.png)
+
+*Ảnh chụp cửa sổ Cờ vua và DIALOG trên Windows ngày 03/11/2026. Ảnh được cắt từ màn hình thật, không phải hình minh họa hay ảnh render.*
+
+| Nhân vật Sora trên desktop | Menu trò chơi khi rê chuột |
+|:--:|:--:|
+| <img src="docs/sora-desktop.png" width="220" alt="Nhân vật Sora RT thực tế trên desktop" /> | <img src="docs/sora-menu.png" width="320" alt="Menu trò chơi Sora RT với cung con" /> |
+
+![Cửa sổ Tic Tac Toe và DIALOG của Sora.AI trên Windows](docs/sora-game.png)
+
+*Ảnh chụp Tic Tac Toe từ phiên đang chạy ngày 03/11/2026. Những hình trên ghi nhận các phiên phát triển, không khẳng định giao diện mới nhất đã được xác minh trực tiếp trên Windows.*
+
+> **Quy tắc hình ảnh:** README chỉ dùng ảnh chụp thực tế do chủ dự án cung cấp hoặc ảnh tài nguyên RT xác định rõ nguồn. Không sử dụng concept giả làm màn hình ứng dụng. Sơ đồ `docs/architecture.png` là hình giải thích kiến trúc, không phải screenshot.
+
+### Cập nhật ảnh README lên GitHub
+
+Thay các tệp trong ZIP vào **thư mục chứa `README.md` ở gốc mã nguồn** (trên máy hiện tại: `F:\Sora.AI\SORA`). GitHub không cập nhật chỉ vì giải nén file trên máy. Sau khi kiểm tra đúng thư mục Git đang theo dõi, commit và push:
+
+```powershell
+cd 'F:\Sora.AI\SORA'
+git rev-parse --show-toplevel
+git add README.md docs/sora-overview.png docs/sora-demo.png docs/sora-demo.svg docs/sora-desktop.png docs/sora-menu.png docs/sora-game.png docs/sit.png
+git commit -m "Cap nhat README va anh SoraAI thuc te"
+git push origin main
+```
+
+Mở lại trang GitHub sau khi push và tải lại bằng `Ctrl+F5`. Nếu `git rev-parse --show-toplevel` không trỏ tới đúng dự án đang có `README.md` trên GitHub thì cần xác định lại thư mục Git trước khi commit.
 
 ## Cập nhật 04/11/2026 — Ổn định đầu khi ngồi trên cửa sổ
 
@@ -25,7 +51,7 @@ Video thực tế cho thấy đầu/tóc Sora méo mạnh khi vừa chuyển san
 - `src/renderer/js/sora-perch-60.mjs` — đồng bộ thời gian frame khi chuyển vào tư thế ngồi.
 - `src/renderer/js/acting.js` — giảm nén/phình khung hình lúc tiếp đất.
 - `tests/sora-sit-head-stability.test.js` — các kiểm thử bảo vệ chống hồi quy.
-- `README.md`, `docs/sora-demo.png`, `docs/sora-demo.svg`, `docs/sit.png` — tài liệu và hình ảnh thật của Sora.AI.
+- `README.md`, `docs/sora-overview.png`, `docs/sora-demo.png`, `docs/sora-demo.svg`, `docs/sora-desktop.png`, `docs/sora-menu.png`, `docs/sora-game.png`, `docs/sit.png` — tài liệu và các ảnh chụp Sora.AI thực tế.
 
 **Cập nhật trên máy:** Thoát Sora hoàn toàn, giải nén bản ZIP vào `F:\Sora.AI\SORA`, chọn ghi đè đúng các tệp trùng tên, mở lại Sora. Không chạy script cài đặt, không tự sao lưu và không động đến `.venv`, `node_modules`, `data`, SQLite hoặc model Ollama.
 
@@ -275,6 +301,9 @@ Kỳ vọng là **40/40**, **3/3** và **34/34** nếu môi trường đầy đ�
 **Ghi nhận nguồn RT:** Tích hợp nhân vật dựa trên [Capri Desktop (mochiiwuff)](https://github.com/mochiiwuff/capri-desktop). Đây là dự án người hâm mộ không liên kết chính thức với CD PROJEKT RED, Studio Trigger hay Netflix. **Giấy phép mã nguồn không đồng nghĩa giấy phép hình ảnh nhân vật**; các hình cắt và fan art có quyền sử dụng riêng. Phông Chakra Petch và JetBrains Mono có giấy phép SIL Open Font License. Cần giữ LICENSE và kiểm tra quyền sử dụng trước khi phát hành/phân phối.
 
 ## Nhật ký thay đổi
+
+- **2026-11-04 — README/ảnh thật:** Loại bỏ ảnh concept ở đầu trang; dùng ảnh chụp Sora.AI trên Windows cho cửa sổ Cờ vua, Tic Tac Toe, menu RT và nhân vật desktop. Sửa ảnh tư thế ngồi cắt nhầm vùng chữ trong video. Ảnh trên GitHub cần commit/push mới được cập nhật.
+
 
 <!-- SORA_CHANGELOG_START -->
 - **2026-10-30 — Bảo trì ổ H và chuẩn hóa README**: Rà soát các bộ cài Sora cũ, lưu trữ ứng viên đã xác nhận, kiểm tra cache thử nghiệm và sửa cú pháp hướng dẫn PowerShell.
