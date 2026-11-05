@@ -47,7 +47,7 @@ body { font-family:Chakra,'Segoe UI',sans-serif; color:#eeeaff; user-select:none
 }
 .wheel[data-active='chat'] .wheel__slice[data-action='chat'],
 .wheel[data-active='games'] .wheel__slice[data-action='games'],
-.wheel[data-active='rest'] .wheel__slice[data-action='rest'],
+.wheel[data-active='media'] .wheel__slice[data-action='media'],
 .wheel[data-active='walk'] .wheel__slice[data-action='walk'],
 .wheel[data-active='settings'] .wheel__slice[data-action='settings'],
 .wheel[data-active='custom'] .wheel__slice[data-action='custom'],
@@ -88,7 +88,7 @@ body { font-family:Chakra,'Segoe UI',sans-serif; color:#eeeaff; user-select:none
 }
 .sector[data-action='chat']     { --dx: 0px; --dy:-53px; }
 .sector[data-action='games']    { --dx: 38px; --dy:-38px; }
-.sector[data-action='rest']     { --dx: 53px; --dy: 0px; }
+.sector[data-action='media']     { --dx: 53px; --dy: 0px; }
 .sector[data-action='walk']     { --dx: 38px; --dy: 38px; }
 .sector[data-action='settings'] { --dx: 0px; --dy: 53px; }
 .sector[data-action='custom']   { --dx:-38px; --dy: 38px; }

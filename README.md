@@ -32,6 +32,19 @@ git push origin main
 
 Mở lại trang GitHub sau khi push và tải lại bằng `Ctrl+F5`. Nếu `git rev-parse --show-toplevel` không trỏ tới đúng dự án đang có `README.md` trên GitHub thì cần xác định lại thư mục Git trước khi commit.
 
+## Cập nhật 05/11/2026 — Gọn menu chính, thêm Media
+
+- **Nằm nghỉ** không còn là nút riêng trên vòng menu chính vì đã có trong menu con **Hành động**. Mục **Ẩn Sora** cũng chỉ nằm trong menu con. Không thay đổi 7 hành động đã có hoặc trạng thái RT khi ngồi/nằm.
+- Vị trí thứ ba trên vòng chính được chuyển thành **Media** (biểu tượng nốt nhạc). Nhấn để **mở/đưa lên trước mini-player `SORA // MEDIA` hiện có** — không đóng player nếu đã mở. Media hiển thị trạng thái nhạc Windows và các nút phát/tạm dừng, chuyển bài, âm lượng khi Windows Media Bridge có thể đọc được thông tin.
+- Cửa sổ menu tròn vẫn giữ **8 múi**, không thêm popup trong suốt hoặc thay đổi kích thước. GAME và Hành động tiếp tục dùng cung ngoài hiện tại. Nút **Di chuyển** là lệnh `teleport` độc lập, không trùng hành động trong menu con nên vẫn giữ.
+- Dùng `fusionCenter.openMini()` riêng cho nút Media. Lệnh `toggleMini()` từ khay hệ thống được giữ như cũ. Không sửa Ollama, SQLite, game, DIALOG hay các asset RT.
+
+![Xem trước vòng menu Hành động với nút Media trên menu chính, dựng bằng Chromium từ mã Sora.AI](docs/sora-actions-preview.png)
+
+*Ảnh xem trước giao diện thực tế từ HTML/CSS/JS của Sora.AI trong Chromium, không phải ảnh chụp Electron Windows. Các ảnh Windows thực tế vẫn được giữ ở đầu README.*
+
+**Kiểm tra trên máy:** Thoát Sora, giải nén ZIP đè vào `F:\Sora.AI\SORA`; mở menu để xác nhận icon Media ở vị trí cũ của Nằm nghỉ. Nhấn Media để mở mini-player; mở lại menu rồi nhấn Media lần nữa phải đưa player lên trước, không đóng nó. Rê chuột tới Hành động để chọn **Nằm nghỉ**. Media chỉ điều khiển các ứng dụng phát âm thanh mà Windows Media Bridge hỗ trợ.
+
 ## Cập nhật 05/11/2026 — Vòng menu con Hành động
 
 **Ẩn Sora** trên vòng menu chính được thay bằng biểu tượng **Hành động** (bàn tay viền neon). Khi rê chuột hoặc nhấp vào biểu tượng, một vòng cung riêng xuất hiện bên ngoài, giống menu GAME đang hoạt động. Hai vòng cung luân phiên trong **cùng một cửa sổ Electron trong suốt 260 DIP**, không tạo thêm cửa sổ và không thay đổi bố cục khi rê chuột.
@@ -45,7 +58,7 @@ Bảy lựa chọn độc lập: **Ẩn Sora**, **Nằm nghỉ**, **Ngồi ngh�
 - **Ẩn:** dùng cơ chế chip/khôi phục có sẵn, dữ liệu và hội thoại không bị xóa.
 - **Nằm:** dùng `lie` hiện có (nếu đang nằm thì trở về ngồi). **Ngồi:** tìm bề mặt ngang hợp lệ hoặc thanh tác vụ. **Đứng:** đưa Sora về điểm đứng mặc định để tránh treo trên không khi rời mép cửa sổ.
 - **Vẫy tay, Nhảy múa, Nhìn quanh:** dùng các hoạt ảnh thực tế trong `src/renderer/js/acting.js`, thông qua `playRequestedAct` để không làm hỏng trạng thái tư thế ngồi/nằm.
-- **Nằm nghỉ** trên vòng chính vẫn giữ như phím tắt cũ; không đổi vị trí 7 mục còn lại. Nhãn hành động được hiển thị ở trung tâm khi rê chuột và hỗ trợ thao tác bàn phím.
+- **Nằm nghỉ** chỉ có ở menu con Hành động kể từ bản cập nhật Media; vị trí cũ trên vòng chính dành cho Media. Nhãn hành động hiện ở trung tâm khi rê chuột và hỗ trợ thao tác bàn phím.
 
 **Kiểm chứng:** Bốn hướng cung menu đã được kiểm thử bằng Chromium, bao gồm nhấp lựa chọn, chuyển GAME/Hành động và vị trí nằm trong khung. Kiểm thử Node xác nhận kết nối các kênh renderer/main. Chưa xác nhận các hoạt ảnh vận hành trên Electron Windows thực tế; nếu nhân vật đang bận hoặc không có chỗ ngồi hợp lệ, một số hành động có thể chưa thực hiện ngay.
 

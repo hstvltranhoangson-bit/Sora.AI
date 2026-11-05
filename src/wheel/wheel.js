@@ -4,7 +4,7 @@
 // existing wheel; only a game-choice click launches a game.
 const NS = 'http://www.w3.org/2000/svg';
 const ACTIONS = [
-  ['chat', 'CHAT'], ['games', 'GAME'], ['rest', 'REST'], ['walk', 'MOVE'],
+  ['chat', 'CHAT'], ['games', 'GAME'], ['media', 'MEDIA'], ['walk', 'MOVE'],
   ['settings', 'SETUP'], ['custom', 'STYLE'], ['guide', 'GUIDE'], ['actions', 'ACTION'],
 ];
 const stage = document.getElementById('wheel-stage');

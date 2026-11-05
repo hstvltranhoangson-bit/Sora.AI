@@ -31,8 +31,14 @@ function createSoraFusion({app, BrowserWindow, ipcMain, backend, overlay, media}
     panel.on('closed',() => { panel=null; });
     return panel;
   }
-  function toggleMini() {
-    if (mini && !mini.isDestroyed()) { mini.close();return false; }
+  // The wheel's MEDIA command only opens/focuses the existing player; it must
+  // not accidentally close it on a second click (the tray retains toggleMini).
+  function openMini() {
+    if (mini && !mini.isDestroyed()) {
+      mini.show();
+      mini.focus();
+      return mini;
+    }
     // SORA-MINI-OVERLAY-ONLY-V2: Only one actor: the existing RT Sora.
     // Tight window bounds let Sora perch on its actual top edge.
     mini = new BrowserWindow({ ...common, title: 'Sora — Nhạc',
@@ -44,6 +50,11 @@ function createSoraFusion({app, BrowserWindow, ipcMain, backend, overlay, media}
     mini.loadFile(miniFile);
     mini.once('ready-to-show', () => mini?.show());
     mini.on('closed',()=>{mini=null;});
+    return mini;
+  }
+  function toggleMini() {
+    if (mini && !mini.isDestroyed()) { mini.close(); return false; }
+    openMini();
     return true;
   }
   // SORA-SIT-THREE-MODES-V3: identify the real Windows HWND of the ONE mini-player.
@@ -122,6 +133,6 @@ function createSoraFusion({app, BrowserWindow, ipcMain, backend, overlay, media}
     require('electron').shell.showItemInFolder(file);
     return {ok:true};
   });
-  return { openDashboard, toggleMini, mediaStatus };
+  return { openDashboard, openMini, toggleMini, mediaStatus };
 }
 module.exports={createSoraFusion};

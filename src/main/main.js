@@ -797,7 +797,7 @@ function registerIpc() {
       case 'game-battleship': openChessWindow('battleship'); break;
       case 'game-detective': openChessWindow('detective'); break;
       case 'chat': sendCommand('chat'); break;
-      case 'rest': sendCommand('lie'); break;
+      case 'media': fusionCenter?.openMini(); break;
       case 'walk': sendCommand('teleport'); break;
       case 'settings': setTimeout(openNativeMenu, 120); break;
       case 'custom': sendCommand('customize'); break;
