@@ -5,7 +5,7 @@
 const NS = 'http://www.w3.org/2000/svg';
 const ACTIONS = [
   ['chat', 'CHAT'], ['games', 'GAME'], ['rest', 'REST'], ['walk', 'MOVE'],
-  ['settings', 'SETUP'], ['custom', 'STYLE'], ['guide', 'GUIDE'], ['hide', 'HIDE'],
+  ['settings', 'SETUP'], ['custom', 'STYLE'], ['guide', 'GUIDE'], ['actions', 'ACTION'],
 ];
 const stage = document.getElementById('wheel-stage');
 const wheel = document.querySelector('.wheel');
@@ -17,9 +17,16 @@ const gameMenu = document.getElementById('game-submenu');
 const gameSegments = document.getElementById('game-segments');
 const gameArc = document.getElementById('game-arc');
 const gameButtons = Array.from(document.querySelectorAll('button[data-game]'));
+const actionMenu = document.getElementById('action-submenu');
+const actionSegments = document.getElementById('action-segments');
+const actionArc = document.getElementById('action-arc');
+const actionButtons = Array.from(document.querySelectorAll('button[data-character-action]'));
+const gameTrigger = iconButtons.find(b => b.dataset.action === 'games');
+const actionTrigger = iconButtons.find(b => b.dataset.action === 'actions');
 const GAME_COUNT = 8;
 if (gameButtons.length !== GAME_COUNT) console.error(`[Sora GAME] Cần ${GAME_COUNT} trò, hiện có ${gameButtons.length}.`);
 let gamesOpen = false;
+let actionsOpen = false;
 let closeTimer = null;
 let currentAngle = -45;
 
@@ -116,7 +123,48 @@ function drawGames(angle) {
   });
   gameArc.setAttribute('d', `M ${outerPolar(148, angle - 69)} A 148 148 0 0 1 ${outerPolar(148, angle + 69)}`);
 }
+function setActionHighlight(action) {
+  if (action) actionMenu.dataset.active = action;
+  else delete actionMenu.dataset.active;
+  for (const element of actionMenu.querySelectorAll('.action-submenu__slice,.action-submenu__choice')) {
+    element.classList.toggle('is-highlighted', Boolean(action) && element.dataset.characterAction === action);
+  }
+  if (actionsOpen) {
+    const name=actionButtons.find(b=>b.dataset.characterAction===action)?.querySelector('.action-submenu__label')?.textContent;
+    caption.textContent=name||'ACTION';
+  }
+}
+function drawActions(angle) {
+  actionSegments.replaceChildren();
+  actionButtons.forEach((button,index)=>{
+    const action=button.dataset.characterAction;
+    const sectorAngle=angle+(index-(actionButtons.length-1)/2)*19;
+    const theta=sectorAngle*Math.PI/180;
+    const d=outerSegment(sectorAngle);
+    const dx=(4.5*Math.cos(theta)).toFixed(2)+'px';
+    const dy=(4.5*Math.sin(theta)).toFixed(2)+'px';
+    const wedge=document.createElementNS(NS,'path');
+    wedge.setAttribute('class','action-submenu__slice');
+    wedge.dataset.characterAction=action;
+    wedge.setAttribute('d',d);
+    wedge.style.setProperty('--lift-x',dx);
+    wedge.style.setProperty('--lift-y',dy);
+    actionSegments.append(wedge);
+    const hit=document.createElementNS(NS,'path');
+    hit.setAttribute('class','action-submenu__hit');
+    hit.dataset.characterAction=action;
+    hit.setAttribute('d',d);
+    hit.addEventListener('pointerenter',()=>{cancelClose();highlight('actions');setActionHighlight(action);});
+    hit.addEventListener('pointerleave',()=>{setActionHighlight('');scheduleClose();});
+    hit.addEventListener('click',()=>window.soraWheel?.action('action-'+action));
+    actionSegments.append(hit);
+    button.style.setProperty('--dx',(124*Math.cos(theta)).toFixed(2)+'px');
+    button.style.setProperty('--dy',(124*Math.sin(theta)).toFixed(2)+'px');
+  });
+  actionArc.setAttribute('d',`M ${outerPolar(148,angle-69)} A 148 148 0 0 1 ${outerPolar(148,angle+69)}`);
+}
 drawGames(currentAngle);
+drawActions(currentAngle);
 // Bố cục đồng bộ với cửa sổ từ URL: không đợi IPC mới hiển thị menu.
 // Nếu URL thiếu tham số, CSS mặc định đặt vòng chính ở giữa cửa sổ.
 {
@@ -130,7 +178,7 @@ drawGames(currentAngle);
     stage.style.setProperty('--wheel-left', left + 'px');
     stage.style.setProperty('--wheel-top', top + 'px');
   }
-  if (params.has('submenuAngle') && [45, -45, 135, -135].includes(angle)) drawGames(angle);
+  if (params.has('submenuAngle') && [45, -45, 135, -135].includes(angle)) { drawGames(angle); drawActions(angle); }
 }
 
 function highlight(action) {
@@ -148,58 +196,81 @@ function cancelClose() {
 }
 function setGamesOpen(open) {
   cancelClose();
-  if (gamesOpen === open) return;
-  gamesOpen = open;
+  if (open) setActionsOpen(false);
+  gamesOpen=open;
   if (!open) setGameHighlight('');
-  if (open) caption.textContent = 'GAME';
-  if (open) stage.dataset.submenu = 'games';
-  else delete stage.dataset.submenu;
-  gameMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
-  gameButtons.forEach((button) => { button.tabIndex = open ? 0 : -1; });
-  // Local state only: no extra Electron window and no resizing on hover.
+  else caption.textContent='GAME';
+  if (open) stage.dataset.submenu='games';
+  else if (stage.dataset.submenu==='games') delete stage.dataset.submenu;
+  gameMenu.setAttribute('aria-hidden',open?'false':'true');
+  gameTrigger.setAttribute('aria-expanded',String(open));
+  gameButtons.forEach(b=>{b.tabIndex=open?0:-1;});
+}
+function setActionsOpen(open) {
+  cancelClose();
+  if (open && gamesOpen) setGamesOpen(false);
+  actionsOpen=open;
+  if (!open) setActionHighlight('');
+  else caption.textContent='ACTION';
+  if (open) stage.dataset.submenu='actions';
+  else if (stage.dataset.submenu==='actions') delete stage.dataset.submenu;
+  actionMenu.setAttribute('aria-hidden',open?'false':'true');
+  actionTrigger.setAttribute('aria-expanded',String(open));
+  actionButtons.forEach(b=>{b.tabIndex=open?0:-1;});
 }
 function scheduleClose() {
   cancelClose();
-  if (!gamesOpen) return;
-  // Keep the flyout alive while the pointer crosses the space between rings.
-  closeTimer = setTimeout(() => {
-    closeTimer = null;
-    if (!gameMenu.matches(':hover') && !iconButtons.find((b) => b.dataset.action === 'games')?.matches(':hover')) {
-      setGamesOpen(false);
-      highlight('');
+  if (!gamesOpen && !actionsOpen) return;
+  closeTimer=setTimeout(()=>{
+    closeTimer=null;
+    const overGame=gameMenu.matches(':hover')||gameTrigger.matches(':hover');
+    const overAction=actionMenu.matches(':hover')||actionTrigger.matches(':hover');
+    if ((gamesOpen&&!overGame)||(actionsOpen&&!overAction)) {
+      setGamesOpen(false);setActionsOpen(false);highlight('');
     }
-  }, 900);
+  },900);
 }
 
 iconButtons.forEach((button) => {
-  const action = button.dataset.action;
-  button.addEventListener('pointerenter', () => {
+  const action=button.dataset.action;
+  function enter() {
     highlight(action);
     if (action === 'games') setGamesOpen(true);
-    else if (gamesOpen) scheduleClose();
+    else if (action==='actions') setActionsOpen(true);
+    else if (gamesOpen||actionsOpen) scheduleClose();
+  }
+  button.addEventListener('pointerenter',enter);
+  button.addEventListener('focus',enter);
+  button.addEventListener('pointerleave',()=>{
+    if (action==='games'||action==='actions') scheduleClose();
+    if (!gamesOpen&&!actionsOpen) highlight('');
   });
-  button.addEventListener('pointerleave', () => {
-    if (action === 'games') scheduleClose();
-    if (!gamesOpen) highlight('');
+  button.addEventListener('blur',()=>{
+    if (action==='games'||action==='actions') scheduleClose();
+    if (!gamesOpen&&!actionsOpen) highlight('');
   });
-  button.addEventListener('focus', () => {
-    highlight(action);
+  button.addEventListener('click',()=>{
     if (action === 'games') setGamesOpen(true);
-    else if (gamesOpen) scheduleClose();
-  });
-  button.addEventListener('blur', () => {
-    if (action === 'games') scheduleClose();
-    if (!gamesOpen) highlight('');
-  });
-  button.addEventListener('click', () => {
-    if (action === 'games') setGamesOpen(true);
-    else { setGamesOpen(false); window.soraWheel?.action(action); }
+    else if (action==='actions') setActionsOpen(true);
+    else {setGamesOpen(false);setActionsOpen(false);window.soraWheel?.action(action);}
   });
 });
 // The transparent flyout rectangle is also a pointer bridge between the
 // 81px main wheel and the 104px inner edge of the outer game ring.
 gameMenu.addEventListener('pointerenter', cancelClose);
 gameMenu.addEventListener('pointerleave', scheduleClose);
+actionMenu.addEventListener('pointerenter',cancelClose);
+actionMenu.addEventListener('pointerleave',scheduleClose);
+
+actionButtons.forEach((button)=>{
+  const action=button.dataset.characterAction;
+  const enter=()=>{cancelClose();highlight('actions');setActionHighlight(action);};
+  button.addEventListener('pointerenter',enter);
+  button.addEventListener('focus',enter);
+  button.addEventListener('pointerleave',()=>{setActionHighlight('');scheduleClose();});
+  button.addEventListener('blur',()=>{setActionHighlight('');scheduleClose();});
+  button.addEventListener('click',()=>window.soraWheel?.action('action-'+action));
+});
 
 gameButtons.forEach((button) => {
   button.addEventListener('pointerenter', () => {
@@ -221,7 +292,7 @@ window.soraWheel?.onLayout((layout) => {
   if (!layout || !Number.isFinite(layout.wheelLeft) || !Number.isFinite(layout.wheelTop)) return;
   stage.style.setProperty('--wheel-left', layout.wheelLeft + 'px');
   stage.style.setProperty('--wheel-top', layout.wheelTop + 'px');
-  if (Number.isFinite(layout.submenuAngle)) drawGames(layout.submenuAngle);
+  if (Number.isFinite(layout.submenuAngle)) { drawGames(layout.submenuAngle); drawActions(layout.submenuAngle); }
   stage.dataset.layoutReady = 'true';
 });
 // Đăng ký listener TRƯỚC khi yêu cầu layout lần đầu.
@@ -235,7 +306,7 @@ document.addEventListener('keydown', (event) => {
   }
   if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
   event.preventDefault();
-  const choices = gamesOpen ? [...iconButtons, ...gameButtons] : iconButtons;
+  const choices = gamesOpen ? [...iconButtons, ...gameButtons] : actionsOpen ? [...iconButtons, ...actionButtons] : iconButtons;
   const index = choices.indexOf(document.activeElement);
   const next = (index + (event.key === 'ArrowRight' ? 1 : -1) + choices.length) % choices.length;
   choices[next].focus();
@@ -243,7 +314,7 @@ document.addEventListener('keydown', (event) => {
 
 // Do not close a game choice because it is outside the *inner* 162px wheel.
 document.addEventListener('pointerdown', (event) => {
-  if (event.target.closest('button[data-action],button[data-game],.game-submenu__hit')) return;
+  if (event.target.closest('button[data-action],button[data-game],button[data-character-action],.game-submenu__hit,.action-submenu__hit')) return;
   const rect = wheel.getBoundingClientRect();
   const distance = Math.hypot(event.clientX - rect.left - rect.width / 2,
     event.clientY - rect.top - rect.height / 2);

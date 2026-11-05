@@ -25,12 +25,31 @@ Thay các tệp trong ZIP vào **thư mục chứa `README.md` ở gốc mã ngu
 ```powershell
 cd 'F:\Sora.AI\SORA'
 git rev-parse --show-toplevel
-git add README.md docs/sora-overview.png docs/sora-demo.png docs/sora-demo.svg docs/sora-desktop.png docs/sora-menu.png docs/sora-game.png docs/sit.png
+git add README.md docs
 git commit -m "Cap nhat README va anh SoraAI thuc te"
 git push origin main
 ```
 
 Mở lại trang GitHub sau khi push và tải lại bằng `Ctrl+F5`. Nếu `git rev-parse --show-toplevel` không trỏ tới đúng dự án đang có `README.md` trên GitHub thì cần xác định lại thư mục Git trước khi commit.
+
+## Cập nhật 05/11/2026 — Vòng menu con Hành động
+
+**Ẩn Sora** trên vòng menu chính được thay bằng biểu tượng **Hành động** (bàn tay viền neon). Khi rê chuột hoặc nhấp vào biểu tượng, một vòng cung riêng xuất hiện bên ngoài, giống menu GAME đang hoạt động. Hai vòng cung luân phiên trong **cùng một cửa sổ Electron trong suốt 260 DIP**, không tạo thêm cửa sổ và không thay đổi bố cục khi rê chuột.
+
+![Menu Hành động Sora.AI xem trước từ HTML/CSS/JS thực tế](docs/sora-actions-preview.png)
+
+*Ảnh xem trước dựng trực tiếp bằng Chromium từ giao diện Sora.AI được sửa trong bản này (không phải ảnh chụp Electron Windows). Các ảnh ở phần trên là ảnh Sora.AI thực tế do chủ dự án cung cấp.*
+
+Bảy lựa chọn độc lập: **Ẩn Sora**, **Nằm nghỉ**, **Ngồi nghỉ**, **Đứng dậy**, **Vẫy tay**, **Nhảy múa**, **Nhìn quanh**. Lựa chọn sẽ thực thi trên cùng nhân vật RT đang chạy:
+
+- **Ẩn:** dùng cơ chế chip/khôi phục có sẵn, dữ liệu và hội thoại không bị xóa.
+- **Nằm:** dùng `lie` hiện có (nếu đang nằm thì trở về ngồi). **Ngồi:** tìm bề mặt ngang hợp lệ hoặc thanh tác vụ. **Đứng:** đưa Sora về điểm đứng mặc định để tránh treo trên không khi rời mép cửa sổ.
+- **Vẫy tay, Nhảy múa, Nhìn quanh:** dùng các hoạt ảnh thực tế trong `src/renderer/js/acting.js`, thông qua `playRequestedAct` để không làm hỏng trạng thái tư thế ngồi/nằm.
+- **Nằm nghỉ** trên vòng chính vẫn giữ như phím tắt cũ; không đổi vị trí 7 mục còn lại. Nhãn hành động được hiển thị ở trung tâm khi rê chuột và hỗ trợ thao tác bàn phím.
+
+**Kiểm chứng:** Bốn hướng cung menu đã được kiểm thử bằng Chromium, bao gồm nhấp lựa chọn, chuyển GAME/Hành động và vị trí nằm trong khung. Kiểm thử Node xác nhận kết nối các kênh renderer/main. Chưa xác nhận các hoạt ảnh vận hành trên Electron Windows thực tế; nếu nhân vật đang bận hoặc không có chỗ ngồi hợp lệ, một số hành động có thể chưa thực hiện ngay.
+
+**Các tệp cập nhật:** `src/wheel/index.html`, `src/wheel/wheel.css`, `src/wheel/wheel.js`, `src/main/main.js`, `src/renderer/js/app.js`, `tests/action-submenu.test.js`, `docs/sora-actions-preview.png`, `README.md`. Thoát Sora và giải nén đè vào `F:\Sora.AI\SORA`, không cần cài đặt/backup, không sửa `.venv`, `node_modules` hoặc `data`.
 
 ## Cập nhật 04/11/2026 — Ổn định đầu khi ngồi trên cửa sổ
 

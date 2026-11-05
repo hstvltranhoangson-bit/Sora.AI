@@ -39,7 +39,7 @@
     <button class="sector" type="button" role="menuitem" data-action="chat" aria-label="Trò chuyện">
       <svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5c-1.6 0-3.15-.5-4.4-1.4L4 19l1.4-4.1A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11.5h8"/></svg>
     </button>
-    <button class="sector" type="button" role="menuitem" data-action="games" aria-label="Trò chơi">
+    <button class="sector" type="button" role="menuitem" data-action="games" aria-label="Trò chơi" aria-haspopup="menu" aria-expanded="false" aria-controls="game-submenu">
       <!-- Biểu tượng trò chơi; rê chuột vào để mở vòng chọn trò phía ngoài. -->
       <svg viewBox="0 0 24 24"><path d="M6.9 8h10.2a4.3 4.3 0 0 1 4.2 3.5l.8 4.8a2.15 2.15 0 0 1-3.5 2L16 16H8l-2.6 2.3a2.15 2.15 0 0 1-3.5-2l.8-4.8A4.3 4.3 0 0 1 6.9 8Z"/><path d="M8 10.5v4M6 12.5h4"/><circle cx="16" cy="11.5" r=".7"/><circle cx="18.3" cy="13.8" r=".7"/></svg>
     </button>
@@ -58,8 +58,9 @@
     <button class="sector" type="button" role="menuitem" data-action="guide" aria-label="Hướng dẫn">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.3 9a2.8 2.8 0 1 1 5.1 1.7L12 13v1.1M12 17.5h.01"/></svg>
     </button>
-    <button class="sector" type="button" role="menuitem" data-action="hide" aria-label="Ẩn Sora">
-      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="13" rx="1.5"/><path d="M8 21h8M12 18v3M5 8l14 7"/></svg>
+    <button class="sector" type="button" role="menuitem" data-action="actions" aria-label="Hành động" aria-haspopup="menu" aria-expanded="false" aria-controls="action-submenu">
+      <!-- Cử động: vẫy tay + tia sáng. Ẩn Sora được chuyển vào vòng menu con. -->
+      <svg viewBox="0 0 24 24"><path d="M8 13.5V6.6a1.3 1.3 0 0 1 2.6 0v4.1-6a1.3 1.3 0 0 1 2.6 0v6.1-4a1.3 1.3 0 0 1 2.6 0v4.4a1.3 1.3 0 0 1 2.6 0v5.1c0 3.4-2.4 5.7-5.7 5.7H11c-2 0-3.2-.7-4.3-2.3L4 15a1.6 1.6 0 0 1 2.4-2.1L8 14.5"/><path d="m3 5 1.5-1.5M19 3l2-1M20.5 8.5H23"/></svg>
     </button>
   </div>
   <!-- Tám biểu tượng trò chơi độc lập trong một vòng cung neon. -->
@@ -76,6 +77,22 @@
     <button class="game-submenu__choice" type="button" role="menuitem" data-game="reversi" aria-label="Mở Cờ Lật" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">◉</span><span class="game-submenu__label">CỜ LẬT</span></button>
     <button class="game-submenu__choice" type="button" role="menuitem" data-game="battleship" aria-label="Mở Bắn Tàu" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">⚓</span><span class="game-submenu__label">BẮN TÀU</span></button>
     <button class="game-submenu__choice" type="button" role="menuitem" data-game="detective" aria-label="Mở Thám Tử" tabindex="-1"><span class="game-submenu__symbol" aria-hidden="true">⌕</span><span class="game-submenu__label">THÁM TỬ</span></button>
+  </div>
+
+  <!-- Vòng cung HÀNH ĐỘNG dùng chung vùng Electron hiện có với GAME.
+       Không tạo popup riêng, giữ nguyên khung 260 DIP. -->
+  <div class="action-submenu" id="action-submenu" role="menu" aria-label="Các hành động của Sora" aria-hidden="true">
+    <svg class="action-submenu__drawing" viewBox="0 0 332 332" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="action-paint" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#352449"/><stop offset="1" stop-color="#141121"/></linearGradient></defs>
+      <g id="action-segments"></g><path class="action-submenu__arc" id="action-arc"></path>
+    </svg>
+    <button class="action-submenu__choice" type="button" role="menuitem" data-character-action="hide" aria-label="Ẩn Sora" tabindex="-1"><span class="action-submenu__symbol" aria-hidden="true">◉</span><span class="action-submenu__label">ẨN SORA</span></button>
+    <button class="action-submenu__choice" type="button" role="menuitem" data-character-action="lie" aria-label="Nằm nghỉ" tabindex="-1"><span class="action-submenu__symbol" aria-hidden="true">☾</span><span class="action-submenu__label">NẰM NGHỈ</span></button>
+    <button class="action-submenu__choice" type="button" role="menuitem" data-character-action="sit" aria-label="Ngồi nghỉ" tabindex="-1"><span class="action-submenu__symbol" aria-hidden="true">♧</span><span class="action-submenu__label">NGỒI NGHỈ</span></button>
+    <button class="action-submenu__choice" type="button" role="menuitem" data-character-action="stand" aria-label="Đứng dậy" tabindex="-1"><span class="action-submenu__symbol" aria-hidden="true">↑</span><span class="action-submenu__label">ĐỨNG DẬY</span></button>
+    <button class="action-submenu__choice" type="button" role="menuitem" data-character-action="wave" aria-label="Vẫy tay" tabindex="-1"><svg class="action-submenu__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13.5V7a1.2 1.2 0 0 1 2.4 0v3.4-5a1.2 1.2 0 0 1 2.4 0v5-3a1.2 1.2 0 0 1 2.4 0v3.6-1.2a1.2 1.2 0 0 1 2.4 0v5.3c0 3.5-2.2 5.6-5.6 5.6h-1.1c-2.2 0-3.6-.9-4.6-2.3L4 15.2a1.4 1.4 0 0 1 2-1.8L8 15"/><path d="m4 5-1-1M19 4l2-1"/></svg><span class="action-submenu__label">VẪY TAY</span></button>
+    <button class="action-submenu__choice" type="button" role="menuitem" data-character-action="dance" aria-label="Nhảy múa" tabindex="-1"><span class="action-submenu__symbol" aria-hidden="true">♪</span><span class="action-submenu__label">NHẢY MÚA</span></button>
+    <button class="action-submenu__choice" type="button" role="menuitem" data-character-action="gaze" aria-label="Nhìn quanh" tabindex="-1"><span class="action-submenu__symbol" aria-hidden="true">✧</span><span class="action-submenu__label">NHÌN QUANH</span></button>
   </div>
   </main>
   <script src="wheel.js"></script>

@@ -614,6 +614,32 @@ async function boot() {
         if (cmd.on) sora.stow();
         else sora.unstow();
         break;
+      case 'action-sit': {
+        if (sora.stowed) await sora.unstow();
+        sora.wake();
+        // Ưu tiên bề mặt ngang hợp lệ; nếu không có cửa sổ, ngồi trên taskbar.
+        const bar = sora.ledge();
+        const seat = sora.pickSeat() || sora.restingSeat() ||
+          (bar && sora.canSit(bar) ? {
+            win:bar, dx:Math.max(65,Math.min(bar.w-65,sora.pos.x-bar.x))
+          } : null);
+        if (seat && !sora.busy && !sora.dragging) await sora.sitOn(seat);
+        else panel.say({ kind:'info',line:'Em chưa tìm được chỗ ngồi an toàn lúc này anh ạ.',hold:3500 });
+        break;
+      }
+      case 'action-stand':
+        if (sora.stowed) await sora.unstow();
+        sora.wake();
+        if (!sora.dragging) await sora.teleport(sora.spot('post'),{stance:'stand'});
+        break;
+      case 'action-wave':
+      case 'action-dance':
+      case 'action-gaze': {
+        const act=cmd.name.slice('action-'.length);
+        const ok=await sora.playRequestedAct(act);
+        if (!ok) panel.say({kind:'info',line:'Em đang bận một chút, anh gọi em lại nhé.',hold:3000});
+        break;
+      }
       case 'lie':
         if (sora.stowed) await sora.unstow();
         if (sora.stance === 'lie') sora.standUp();

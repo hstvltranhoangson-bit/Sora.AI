@@ -785,7 +785,7 @@ function registerIpc() {
   });
   ipcMain.on('wheel:action', (event, action) => {
     if (!wheelWindow || event.sender !== wheelWindow.webContents) return;
-    if (action === 'games') return; // GAME only toggles the sub-menu in wheel.js
+    if (action === 'games' || action === 'actions') return; // Submenus only toggle locally in wheel.js
     closeWheel();
     switch (action) {
       case 'game-chess': openChessWindow('chess'); break;
@@ -802,7 +802,14 @@ function registerIpc() {
       case 'settings': setTimeout(openNativeMenu, 120); break;
       case 'custom': sendCommand('customize'); break;
       case 'guide': sendCommand('welcome'); break;
-      case 'hide': toggleVisible(); break;
+      case 'hide': toggleVisible(); break; // legacy fallback
+      case 'action-hide': toggleVisible(); break;
+      case 'action-lie': sendCommand('lie'); break;
+      case 'action-sit': sendCommand('action-sit'); break;
+      case 'action-stand': sendCommand('action-stand'); break;
+      case 'action-wave': sendCommand('action-wave'); break;
+      case 'action-dance': sendCommand('action-dance'); break;
+      case 'action-gaze': sendCommand('action-gaze'); break;
       default: break;
     }
   });

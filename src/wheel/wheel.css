@@ -52,7 +52,7 @@ body { font-family:Chakra,'Segoe UI',sans-serif; color:#eeeaff; user-select:none
 .wheel[data-active='settings'] .wheel__slice[data-action='settings'],
 .wheel[data-active='custom'] .wheel__slice[data-action='custom'],
 .wheel[data-active='guide'] .wheel__slice[data-action='guide'],
-.wheel[data-active='hide'] .wheel__slice[data-action='hide'] {
+.wheel[data-active='actions'] .wheel__slice[data-action='actions'] {
   fill:#343652; stroke:#6fffd6; stroke-width:1.9;
   filter:drop-shadow(0 0 3px rgba(95,255,205,.6));
 }
@@ -93,7 +93,7 @@ body { font-family:Chakra,'Segoe UI',sans-serif; color:#eeeaff; user-select:none
 .sector[data-action='settings'] { --dx: 0px; --dy: 53px; }
 .sector[data-action='custom']   { --dx:-38px; --dy: 38px; }
 .sector[data-action='guide']    { --dx:-53px; --dy: 0px; }
-.sector[data-action='hide']     { --dx:-38px; --dy:-38px; }
+.sector[data-action='actions']     { --dx:-38px; --dy:-38px; }
 .sector svg {
   display:block; width:19px; height:19px; fill:none; stroke:currentColor;
   stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
@@ -192,3 +192,65 @@ body { font-family:Chakra,'Segoe UI',sans-serif; color:#eeeaff; user-select:none
 .game-submenu__symbol { display:grid; place-items:center; width:25px; height:25px; font-size:23px; line-height:1; }
 .game-submenu__choice.is-highlighted { transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(1.06); }
 .game-submenu__slice.is-highlighted { fill:#393a59; stroke:#86ffe0; stroke-width:1.9; filter:drop-shadow(0 0 5px rgba(71,255,201,.70)); }
+
+/* Hành động: cung con thứ hai, thay thế vị trí HIDE trên vòng chính.
+   Chỉ hiển thị MỘT cung tại một thời điểm để không che GAME. */
+.action-submenu {
+  position:absolute; z-index:1;
+  left:calc(var(--wheel-left) - 85px);
+  top:calc(var(--wheel-top) - 85px);
+  width:332px; height:332px;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:scale(.96); transform-origin:center;
+  transition:opacity 160ms ease, transform 180ms ease, visibility 0s 180ms;
+}
+.wheel-stage[data-submenu='actions'] .action-submenu {
+  opacity:1; visibility:visible; transform:scale(1); pointer-events:none;
+  transition:opacity 160ms ease, transform 180ms ease, visibility 0s;
+}
+.action-submenu__drawing {
+  position:absolute; inset:0; width:100%; height:100%;
+  overflow:visible; pointer-events:none; filter:drop-shadow(0 2px 8px rgba(5,3,21,.7));
+}
+.action-submenu__slice {
+  fill:url(#action-paint); stroke:#8b56b9; stroke-width:1.35;
+  transform:translate(0,0); pointer-events:none;
+  transition:transform 185ms cubic-bezier(.2,.85,.25,1.15),fill 170ms,stroke 170ms,filter 170ms;
+}
+.action-submenu__hit { fill:transparent; stroke:none; pointer-events:all; cursor:pointer; }
+.action-submenu__slice.is-highlighted {
+  fill:#393a59; stroke:#86ffe0; stroke-width:1.9;
+  filter:drop-shadow(0 0 5px rgba(71,255,201,.7));
+  transform:translate(var(--lift-x),var(--lift-y));
+}
+.action-submenu__arc {
+  fill:none; stroke:#20ffc0; stroke-width:3.8;
+  filter:drop-shadow(0 0 4px rgba(32,255,192,.6));
+}
+.action-submenu__choice {
+  position:absolute;left:50%;top:50%;width:34px;height:37px;
+  border:0;border-radius:10px;padding:0;display:flex;align-items:center;justify-content:center;
+  color:#efeaff;background:transparent;pointer-events:none;cursor:pointer;outline:none;
+  transform:translate(-50%,-50%) translate(var(--dx),var(--dy));
+  transition:color 160ms,filter 160ms,transform 185ms cubic-bezier(.2,.85,.25,1.15);
+}
+.wheel-stage[data-submenu='actions'] .action-submenu__choice { pointer-events:auto; }
+.action-submenu__choice:hover,.action-submenu__choice:focus-visible,.action-submenu__choice.is-highlighted {
+  color:#89ffdf;filter:drop-shadow(0 0 6px rgba(77,255,205,.55));
+  transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(1.09);
+}
+.action-submenu__choice:focus-visible { outline:1px solid #6dffd5; }
+.action-submenu__symbol {font:600 23px/1 'Segoe UI Symbol','Segoe UI Emoji',sans-serif;pointer-events:none;}
+.action-submenu__label {
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+@media(prefers-reduced-motion:reduce){
+  .action-submenu,.action-submenu__slice,.action-submenu__choice{transition:none;}
+}
+
+/* Chỉ cung đang mở mới có hit targets; cung vừa đóng KHÔNG được chặn click. */
+.game-submenu__hit,.action-submenu__hit { pointer-events:none; }
+.wheel-stage[data-submenu='games'] .game-submenu__hit { pointer-events:all; }
+.wheel-stage[data-submenu='actions'] .action-submenu__hit { pointer-events:all; }
+.action-submenu__icon {width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;pointer-events:none;}
